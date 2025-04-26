@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Info Generator</title>
+</head>
+<body style="font-family: Arial, sans-serif;">
+
+    <h1>Random Info Generator</h1>
+    <button onclick="generateRandomInfo()">Generate</button>
+    <button onclick="downloadInfo()">Download as TXT</button>
+
+    <p><strong>First Name:</strong> <span id="first_name"></span></p>
+    <p><strong>Last Name:</strong> <span id="last_name"></span></p>
+    <p><strong>Birthday:</strong> <span id="birthday"></span></p>
+    <p><strong>Phone:</strong> <span id="phone"></span></p>
+    <p><strong>Password:</strong> <span id="password"></span></p>
+
+    <script>
+        function getRandomItem(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function generateRandomName() {
+            const firstNames = ["Sophat", "Sreymom", "Vanna", "Sokha", "Pich", "Vathana"];
+            const lastNames = ["Pen", "Sok", "Reang", "Chao", "Kun", "Thach"];
+            return {
+                first: getRandomItem(firstNames),
+                last: getRandomItem(lastNames)
+            };
+        }
+
+        function generateRandomBirthday() {
+            const year = Math.floor(Math.random() * (2005 - 1980 + 1)) + 1980;
+            const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            return `${day}/${month}/${year}`;
+        }
+
+        function generateRandomPhone() {
+            const part1 = Math.floor(Math.random() * 90) + 10;
+            const part2 = Math.floor(Math.random() * 9000000) + 1000000;
+            return `+855${part1}${part2}`;
+        }
+
+        function generatePassword() {
+            const number = Math.floor(Math.random() * 900000) + 100000;
+            return `Fb@${number}`;
+        }
+
+        function generateRandomInfo() {
+            const name = generateRandomName();
+            document.getElementById('first_name').textContent = name.first;
+            document.getElementById('last_name').textContent = name.last;
+            document.getElementById('birthday').textContent = generateRandomBirthday();
+            document.getElementById('phone').textContent = generateRandomPhone();
+            document.getElementById('password').textContent = generatePassword();
+        }
+
+        function downloadInfo() {
+            const firstName = document.getElementById('first_name').textContent;
+            const lastName = document.getElementById('last_name').textContent;
+            const birthday = document.getElementById('birthday').textContent;
+            const phone = document.getElementById('phone').textContent;
+            const password = document.getElementById('password').textContent;
+
+            const content = `First Name: ${firstName}\nLast Name: ${lastName}\nBirthday: ${birthday}\nPhone: ${phone}\nPassword: ${password}`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'random_info.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body>
+</html>
